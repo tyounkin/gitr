@@ -1,6 +1,8 @@
 #include "Field.hpp"
 #include "file_io.hpp"
 #include <cmath>
+#include <netcdf_par.h>
+#include "mpi.h"
 typedef double P;
 Field2d_rz::Field2d_rz() {}
 Field2d_xz::Field2d_xz() {}
