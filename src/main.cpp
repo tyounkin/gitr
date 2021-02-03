@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <cstring>
 
-#include "Field.cpp"
+#include "Field.hpp"
 #include "file_io.hpp"
 
 #include <thrust/device_vector.h>
