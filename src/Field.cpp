@@ -1,11 +1,20 @@
 #include "Field.hpp"
 #include "file_io.hpp"
 #include <cmath>
+#include <netcdf>
 #include <netcdf_par.h>
 #include "mpi.h"
 typedef double P;
+
+Field::Field() {}
+Field0d_const::Field0d_const() {}
 Field2d_rz::Field2d_rz() {}
 Field2d_xz::Field2d_xz() {}
+
+Field0d_const::Field0d_const(P value) {
+  typedef double P;
+  value = value;
+}
 
 Field2d_rz::Field2d_rz(libconfig::Config &cfg,std::string s) {
   typedef double P;
@@ -95,15 +104,15 @@ Field2d_rz::Field2d_rz(libconfig::Config &cfg,std::string s) {
     char dimname2[128];
     nc_inq_dimname (ncid, dimidsp[0], &dimname1[0]);
     nc_inq_dimname (ncid, dimidsp[1], &dimname1[0]);
-      Field2d_rz::r=coord1;
+      Field2d_rz::x=coord1;
     for (auto it = coord1.cbegin(); it != coord1.cend(); it++)
     {
       std::cout << *it << ' ';
     }
-      Field2d_rz::nr = Field2d_rz::r.size();
-      Field2d_rz::dr = Field2d_rz::r[1] - Field2d_rz::r[0];
-      Field2d_rz::r_start = Field2d_rz::r.front();
-      Field2d_rz::r_end = Field2d_rz::r.back();
+      Field2d_rz::nx = Field2d_rz::x.size();
+      Field2d_rz::dx = Field2d_rz::x[1] - Field2d_rz::x[0];
+      Field2d_rz::x_start = Field2d_rz::x.front();
+      Field2d_rz::x_end = Field2d_rz::x.back();
       Field2d_rz::z = coord2;
       Field2d_rz::nz = Field2d_rz::z.size();
       Field2d_rz::dz = Field2d_rz::z[1] - Field2d_rz::z[0];
@@ -321,6 +330,11 @@ Field2d_xz::Field2d_xz(libconfig::Config &cfg,std::string s) {
 //  nc_close(ncid);
 //
 //}
+P Field0d_const::interpolate_field(P x_point,P y_point, P z_point){
+  P interpolated_value= Field0d_const::value[0];
+  return interpolated_value;
+}
+
 P Field2d_xz::interpolate_field(P x_point,P y_point, P z_point){
   int x_index = std::floor((x_point - Field2d_xz::x_start + 0.5*Field2d_xz::dx)/Field2d_xz::dx);
   int z_index = std::floor((z_point - Field2d_xz::z_start + 0.5*Field2d_xz::dz)/Field2d_xz::dz);
@@ -333,7 +347,7 @@ P Field2d_xz::interpolate_field(P x_point,P y_point, P z_point){
 P Field2d_rz::interpolate_field(P x_point,P y_point, P z_point){
   //P r_point = sqrt(x_point*x_point + y_point*y_point);
   P r_point = sqrt(x_point*x_point);// + y_point*y_point);
-  int r_index = std::floor((r_point - Field2d_rz::r_start + 0.5*Field2d_rz::dr)/Field2d_rz::dr);
+  int r_index = std::floor((r_point - Field2d_rz::x_start + 0.5*Field2d_rz::dx)/Field2d_rz::dx);
   int z_index = std::floor((z_point - Field2d_rz::z_start + 0.5*Field2d_rz::dz)/Field2d_rz::dz);
   int value_index = r_index*Field2d_rz::nz + z_index;
   std::cout << " x_ind z_ind val_ind " << r_index << " " << z_index << " " << value_index << std::endl;

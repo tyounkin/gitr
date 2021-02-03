@@ -17,7 +17,9 @@ extern template double getVariable(libconfig::Config &cfg, const std::string s);
 extern template const char* getVariable(libconfig::Config &cfg, const std::string s);
 
 //template <typename F>
-//F importField(libconfig::Config &cfg,std::string s);
-//extern template Field2d_rz importField(libconfig::Config &cfg,std::string s);
-//extern template Field2d_xz importField(libconfig::Config &cfg,std::string s);
+Field importField(std::string file, std::string s);
+//extern template Field importField(std::string file,std::string s);
+//extern template Field0d_const importField(std::string file,std::string s);
+//extern template Field2d_rz importField(std::string file,std::string s);
+//extern template Field2d_xz importField(std::string file,std::string s);
 #endif

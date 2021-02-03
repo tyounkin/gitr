@@ -3,7 +3,7 @@
 #include <iostream>
 #include <libconfig.h++>
 #include <stdio.h>
-
+#include "Field.hpp"
 #include "catch.hpp"
 
 TEST_CASE("Factorials are computed", "[factorial]") {

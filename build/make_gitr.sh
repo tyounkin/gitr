@@ -19,4 +19,5 @@ cmake -DTHRUST_INCLUDE_DIR=$THRUST_DIR \
     -DHDF5_INCLUDE_DIRS=${H5DIR}/include \
     -DHDF5_C_COMPILER_EXECUTABLE=${H5DIR}/bin/h5pcc \
     -DHDF5_HL_LIBRARIES=${H5DIR}/lib/libhdf5_hl.dylib \
+    -DUSE_DOUBLES=1 \
     ..

@@ -29,5 +29,17 @@ def netcdfFile():
     xi_tuple = (0.2,0.5)
     interp_val = scipy.interpolate.interpn(points_tuple,val,xi_tuple)
     print("interp_val ", interp_val)
+
+def netcdfFile_const():
+    nD = 1;
+
+    val = 20;
+    
+    rootgrp = netCDF4.Dataset("plasma_profiles.nc", "w", format="NETCDF4")
+    nr_nc = rootgrp.createDimension("const", 0)
+    val_nc = rootgrp.createVariable("te","f8","const")
+    val_nc[:] = val
+    rootgrp.close()
 if __name__ == "__main__": 
-    netcdfFile()
+    #netcdfFile()
+    netcdfFile_const()
