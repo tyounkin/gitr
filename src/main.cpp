@@ -8,6 +8,7 @@
 
 #include "Field.hpp"
 #include "file_io.hpp"
+#include "managed.hpp"
 
 #include <thrust/device_vector.h>
 #include <thrust/host_vector.h>
@@ -38,7 +39,17 @@ struct this_functor
   this_functor(Field* _field) : field(_field) {}
 
     void operator()(size_t index) const {
-      std::cout << "interpolated val " << field->interpolate_value(0.0,0.0,0.0,field) << std::endl;
+      //std::cout << "interpolated val " << field->interpolate_value(0.0,0.0,0.0,field) << std::endl;
+      printf ("inside functor");
+    }
+};
+struct that_functor
+{
+  int * a;
+  that_functor(int * _a) : a(_a) {}
+
+    void operator()(size_t index) const {
+      printf ("inside functor");
     }
 };
 
@@ -95,7 +106,10 @@ int main(int argc, char **argv) {
   //      std::cout << "D[" << i << "] = " << dVec[i] << std::endl;
   thrust::counting_iterator<std::size_t> point_first(0);
   thrust::counting_iterator<std::size_t> point_last(10);
-  this_functor tf(&te);
+  //this_functor tf(&te);
+  //thrust::for_each(thrust::device,point_first,point_last,tf);
+  int tha = 4;
+  that_functor tf(&tha);
   thrust::for_each(thrust::device,point_first,point_last,tf);
   MPI_Finalize();
   return 0;
