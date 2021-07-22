@@ -49,11 +49,15 @@ template const char* getVariable(libconfig::Config &cfg, const std::string s);
 
 //template <typename F>
 Field importField(std::string ncfilename,std::string ncvarname) {
+  std::cout << "in importField "  << std::endl;
   typedef double P;
   
   int err,status,ncid,groupid,cmode,val_id,r_id,retval;
   cmode = NC_NOWRITE;
-  err = nc_open_par(ncfilename.c_str(), cmode, MPI_COMM_WORLD, MPI_INFO_NULL, &ncid);
+  //err = nc_open_par(ncfilename.c_str(), cmode, MPI_COMM_WORLD, MPI_INFO_NULL, &ncid);
+  std::cout << "in importField 2"  << std::endl;
+  err = nc_open(ncfilename.c_str(), cmode, &ncid);
+  std::cout << "in importField 3"  << std::endl;
   std::cout << "err " << err << std::endl;
   std::cout << "Error: " <<  nc_strerror(err) << std::endl;
   err=nc_inq_varid (ncid, ncvarname.c_str(), &val_id);

@@ -20,13 +20,22 @@
 #endif
 
 class Managed {
+
  void *operator new(size_t len) {
- void *ptr;
+#if defined(CUDA)
+   void *ptr;
  cudaMallocManaged(&ptr, len);
  return ptr;
+#else
+    return ::operator new(len);
+#endif
  }
  void operator delete(void *ptr) {
+#if defined(CUDA)
  cudaFree(ptr);
+ #else
+    ::operator delete(ptr);
+#endif
  }
 };
  

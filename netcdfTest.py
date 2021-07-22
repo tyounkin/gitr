@@ -36,7 +36,7 @@ def netcdfFile_const():
     val = 20;
     
     rootgrp = netCDF4.Dataset("plasma_profiles.nc", "w", format="NETCDF4")
-    nr_nc = rootgrp.createDimension("const", 0)
+    nr_nc = rootgrp.createDimension("const", 1)
     val_nc = rootgrp.createVariable("te","f8","const")
     val_nc[:] = val
     rootgrp.close()

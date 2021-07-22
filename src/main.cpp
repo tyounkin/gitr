@@ -39,8 +39,8 @@ struct this_functor
   this_functor(Field* _field) : field(_field) {}
 
     void operator()(size_t index) const {
-      //std::cout << "interpolated val " << field->interpolate_value(0.0,0.0,0.0,field) << std::endl;
-      printf ("inside functor");
+      std::cout << "interpolated val " << field->interpolate_value(0.0,0.0,0.0,field) << std::endl;
+      //printf ("inside functor");
     }
 };
 struct that_functor
@@ -54,15 +54,20 @@ struct that_functor
 };
 
 int main(int argc, char **argv) {
-  MPI_Init(&argc,&argv);
+  std::cout << "hi" << std::endl;
+  //MPI_Init(&argc,&argv);
 
-  int world_size;
-  MPI_Comm_size(MPI_COMM_WORLD, &world_size);
+  //std::cout << "hi2" << std::endl;
+  //int world_size;
+  //MPI_Comm_size(MPI_COMM_WORLD, &world_size);
+  //std::cout << "hi3" << std::endl;
 
-  int world_rank;
-  MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
+  //int world_rank;
+  //MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
+  //std::cout << "hi4" << std::endl;
   
   Field te = importField("plasma_profiles.nc","te");
+  std::cout << "hi5" << std::endl;
   //typedef Field2d_rz P2;
   //
   //libconfig::Config cfg, cfg_geom;
@@ -106,11 +111,11 @@ int main(int argc, char **argv) {
   //      std::cout << "D[" << i << "] = " << dVec[i] << std::endl;
   thrust::counting_iterator<std::size_t> point_first(0);
   thrust::counting_iterator<std::size_t> point_last(10);
-  //this_functor tf(&te);
-  //thrust::for_each(thrust::device,point_first,point_last,tf);
+  this_functor thf(&te);
+  thrust::for_each(thrust::device,point_first,point_last,thf);
   int tha = 4;
   that_functor tf(&tha);
   thrust::for_each(thrust::device,point_first,point_last,tf);
-  MPI_Finalize();
+  //MPI_Finalize();
   return 0;
 }
